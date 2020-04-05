@@ -50,12 +50,16 @@ function Planet(props) {
        }
 
     }, [])
+
+    if(!name){
+        return null;
+    }
   
     return (
-        <div className="flex-item">
+        <div className="flex-item" data-test="planet-item">
             <div className={`planet height-${heightvalue}`}>
             </div>
-            <div className="planet-title">{name}</div>
+            <div className="planet-title" data-test="planet-title">{name}</div>
         </div>
     )
 }

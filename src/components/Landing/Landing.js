@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Input, Button } from 'antd';
 import { BASE_API_URL } from '../Config';
 import './Landing.css';
-import Planet from './Planet';
+import Planet from './Section/Planet';
 import { useSelector } from 'react-redux';
-const { Search } = Input;
+import SearchBar from './Section/SearchBar';
+import Loadmore from './Section/Loadmore';
+import NoResultsFound from './Section/NoResultsFound';
+import WarningMsg from './Section/WarningMsg';
 
 function Landing() {
     const [Planets, setPlanets] = useState([])
@@ -109,38 +111,24 @@ function Landing() {
     ))
     return (
         <div className="landing-container">
-            {
-                blockstatus && 
-                <div className="warning-msg">
-                    <span>You are not allowed to make more than 15 search in a minute.Please wait..</span>
-                </div>
-            }
-            <div className="searchbox">
-                <Search
-                    placeholder="Search planet..."
-                    size="large"
-                    enterButton
-                    allowClear
-                    disabled={blockstatus}
-                    onSearch={handleSearch}
-                    onChange={handleChange}
-                />
-            </div>
+            <WarningMsg
+                blockstatus={blockstatus}
+            />
+            <SearchBar
+                handleSearch={handleSearch}
+                handleChange={handleChange}
+                blockstatus={blockstatus}
+            />
             <div className="flex-container">
                 {renderPlanet}
             </div>
-            {
-                !resultsfound && 
-                <div className="warning-msg">
-                    <span>Sorry!! No results found</span>
-                </div>
-            }
-            {
-                nextPage && 
-                <div className="load-more">
-                    <Button type="primary" onClick={handleLoadmore}>Load More</Button>
-                </div>
-            }
+            <NoResultsFound
+                resultsfound={resultsfound}
+            />
+            <Loadmore
+                nextPage={nextPage}
+                handleLoadmore={handleLoadmore}
+            />
         </div>
     )
 }
